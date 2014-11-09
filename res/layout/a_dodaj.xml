@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/rG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/rTowarzyskie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Towarzystkie" />
+
+        <RadioButton
+            android:id="@+id/rPodroz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Podróż" />
+
+        <RadioButton
+            android:id="@+id/rBiznesowe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Biznesowe" />
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/etNazwa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvNazwa"
+        android:layout_toRightOf="@+id/rG"
+        android:ems="10"
+        android:hint="Nazwa Spotkania" />
+
+    <EditText
+        android:id="@+id/etOpis"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignLeft="@+id/etNazwa"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etNazwa"
+        android:ems="10"
+        android:hint="Opis spotkania" />
+
+    <EditText
+        android:id="@+id/etAdres"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etMiejsce"
+        android:layout_alignRight="@+id/etMiejsce"
+        android:layout_below="@+id/etMiejsce"
+        android:ems="10"
+        android:hint="Adres Grunwaldzka" />
+
+    <CheckBox
+        android:id="@+id/cbAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/rG"
+        android:text="Alarm" />
+
+    <EditText
+        android:id="@+id/etMiejsce"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etOpis"
+        android:layout_toRightOf="@+id/rG"
+        android:ems="10"
+        android:hint="Miasto Wrocław" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/etData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etMiejsce"
+        android:layout_alignRight="@+id/etAdres"
+        android:layout_below="@+id/etAdres"
+        android:ems="10"
+        android:hint="Data 20/20/2020"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/bGetinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bEdit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/bUsun"
+        android:text="Get Info" />
+
+    <Button
+        android:id="@+id/bUsun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bGetinfo"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/etAdres"
+        android:text="Usun" />
+
+    <Button
+        android:id="@+id/bDodaj"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/bUsun"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/bUsun"
+        android:text="Dodaj" />
+
+    <Spinner
+        android:id="@+id/idRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/bDodaj"
+        android:layout_below="@+id/cbAlarm" />
+
+    <Button
+        android:id="@+id/bEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/etData"
+        android:layout_toLeftOf="@+id/etData"
+        android:text="Edit" />
+
+</RelativeLayout>

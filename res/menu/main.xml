@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:androidapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="pl.zeromskiego.androidapp.mapa" >
+
+<item android:id="@+id/Opcje"
+    	android:title="Opcje"
+    	 android:showAsAction="always" >
+    <item
+        android:id="@+id/wyslij"
+        android:title="Wyslij polozenie">
+    </item>
+    <item
+        android:id="@+id/dodaj"
+        android:title="Zarzadzaj spotkaniami">
+    </item>
+     <item
+        android:id="@+id/wyswietl"
+        android:title="Pokaz spotkania">
+       
+    </item>
+      <item
+        android:id="@+id/odswiez"
+        android:title="Odswiez">
+      
+    </item>
+    <item
+        android:id="@+id/onas"
+        android:title="O nas">
+       
+    </item>
+    <item
+        android:id="@+id/exit"
+        android:title="Exit">
+       
+    </item>
+</item>
+</menu>
