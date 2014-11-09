@@ -80,8 +80,8 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		getApplicationInfo().targetSdkVersion = 10;
-
+		 getApplicationInfo().targetSdkVersion = 10;
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mapa);
 		bz = new BazaSpotkan(this);
@@ -94,12 +94,12 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		}
 
 	}
-
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.wyslij) {
@@ -214,7 +214,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		googleMap.getUiSettings().setRotateGesturesEnabled(true);
 		googleMap.setOnMapLongClickListener(this);
 		googleMap.setOnMarkerClickListener(this);
-
+		
 	}
 
 	@Override
@@ -225,7 +225,6 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	@Override
 	public void onMapLongClick(LatLng arg0) {
-
 		OnLongClicklat = arg0.latitude;
 		OnLongClicklng = arg0.longitude;
 		pokazadres(OnLongClicklat, OnLongClicklng);
@@ -286,7 +285,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 				new connectAsyncTask(urlTopass).execute();
 
 			}
-		});
+		}); 
 		MOpcje.setButton2("Edytuj", new DialogInterface.OnClickListener() {
 
 			@Override
@@ -307,7 +306,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		MOpcje.show();
 		return true;
 	}
-
+	
 	private class connectAsyncTask extends AsyncTask<Void, Void, String> {
 		private ProgressDialog progressDialog;
 		String url;
@@ -321,7 +320,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			progressDialog = new ProgressDialog(mapa.this);
-			progressDialog.setMessage("Wczytywanie drogi, prosze czekac...");
+			progressDialog.setMessage("Fetching route, Please wait...");
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
@@ -409,7 +408,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	public void drawPath(String result) {
 		if (line != null) {
-
+			googleMap.clear();
 		}
 
 		try {
@@ -469,6 +468,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 		return poly;
 	}
+	
 
 	public class Load extends AsyncTask<String, Integer, String> {
 

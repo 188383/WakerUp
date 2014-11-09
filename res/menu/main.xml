@@ -8,31 +8,27 @@
     	 android:showAsAction="always" >
     <item
         android:id="@+id/wyslij"
-        android:title="Wyslij polozenie">
+        android:title="Wyslij polozenie" android:visible="true" android:enabled="true">
     </item>
     <item
         android:id="@+id/dodaj"
-        android:title="Zarzadzaj spotkaniami">
+        android:title="Zarzadzaj spotkaniami" android:visible="true">
     </item>
      <item
         android:id="@+id/wyswietl"
         android:title="Pokaz spotkania">
-       
     </item>
       <item
         android:id="@+id/odswiez"
         android:title="Odswiez">
-      
     </item>
     <item
         android:id="@+id/onas"
         android:title="O nas">
-       
     </item>
     <item
         android:id="@+id/exit"
         android:title="Exit">
-       
     </item>
 </item>
 </menu>
