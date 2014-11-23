@@ -36,6 +36,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,8 +86,8 @@ public class mapa extends Activity implements OnMapLongClickListener,
 	public static String ida;
 	public String markery;
 	Circle circle1;
-    LocationManager lm;
-    Location location;
+	LocationManager lm;
+	Location location;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		}
 
 	}
+
 	private void initilizeMap() {
 		if (googleMap == null) {
 			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
@@ -126,14 +128,23 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		googleMap.getUiSettings().setRotateGesturesEnabled(true);
 		googleMap.setOnMapLongClickListener(this);
 		googleMap.setOnMarkerClickListener(this);
-		lm = (LocationManager)this.getSystemService(LOCATION_SERVICE); 
-		location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER); //<5>
-	    if (location != null) {
-	      Log.d(TAG, location.toString());
-	      this.onLocationChanged(location); //<6>
-	    }
-	  
+		lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+		location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER); // <5>
+		if (location != null) {
+			Log.d(TAG, location.toString());
+			this.onLocationChanged(location); // <6>
+		}
+		if (location == null) {
+			location = lm
+					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER); // <5>
+			if (location != null) {
+				Log.d(TAG, location.toString());
+				this.onLocationChanged(location); // <6>
+			}
+		}
+
 	}
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -168,8 +179,8 @@ public class mapa extends Activity implements OnMapLongClickListener,
 			return true;
 		}
 		if (item.getItemId() == R.id.exit) {
-			onDestroy();
 			finish();
+			System.exit(0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -177,26 +188,26 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	private void DrawCircle() {
 		String[] Idmarkery = markery.split(";");
-	
+
 		for (int i = 0; i < Idmarkery.length; i++) {
 			String element1 = (String) powiadom.al.get(Idmarkery[i]);
-			if ("true".equals(element1)) {	
+			if ("true".equals(element1)) {
 				int element2 = (Integer) powiadom.odl.get(Idmarkery[i]);
 				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
 				double elat = element3.latitude;
 				double elng = element3.longitude;
-				CircleOptions circleOptions1 = new CircleOptions().center(
-				new LatLng(elat, elng)).radius(element2).zIndex(i);
+				CircleOptions circleOptions1 = new CircleOptions()
+						.center(new LatLng(elat, elng)).radius(element2)
+						.zIndex(i);
 				circle1 = googleMap.addCircle(circleOptions1);
-				Log.v(TAG,"nazwa kolo" + circle1.getZIndex());
-			}else if ("false".equals(element1)) {
-				LatLng srodekk=circle1.getCenter();
+				Log.v(TAG, "nazwa kolo" + circle1.getZIndex());
+			} else if ("false".equals(element1)) {
+				LatLng srodekk = circle1.getCenter();
 				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
-				if(element3 == srodekk)
-				circle1.remove();
+				if (element3 == srodekk)
+					circle1.remove();
 			}
-				
-			
+
 		}
 	}
 
@@ -205,7 +216,6 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		double lat = 0.0;
 		double lng = 0.0;
 		markery = "";
-
 
 		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
 		try {
@@ -259,8 +269,6 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		bz.close();
 	}
 
-
-
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -269,11 +277,11 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		CreateMap();
 		DrawCircle();
 	}
+
 	@Override
-	public void onDestroy()
-	{
-	    // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
-	        super.onDestroy();
+	public void onDestroy() {
+		// RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
+		super.onDestroy();
 
 	}
 
@@ -282,6 +290,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		// TODO Auto-generated method stub
 		super.onPause();
 	}
+
 	@Override
 	public void onMapLongClick(LatLng arg0) {
 		OnLongClicklat = arg0.latitude;
@@ -320,6 +329,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		}
 
 	}
+
 
 	@Override
 	public boolean onMarkerClick(Marker arg0) {
@@ -572,9 +582,9 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	@Override
 	public void onLocationChanged(Location l) {
-		// TODO Auto-generated method stub    
+		// TODO Auto-generated method stub
 		String[] Idmarkery = markery.split(";");
-
+		
 		for (int i = 0; i < Idmarkery.length; i++) {
 			String element1 = (String) powiadom.al.get(Idmarkery[i]);
 			if ("true".equals(element1)) {
@@ -586,22 +596,43 @@ public class mapa extends Activity implements OnMapLongClickListener,
 				if (distance[0] < element2) {
 					powiadom.al.put(Idmarkery[i], "false");
 					String element4 = (String) powiadom.al.get(Idmarkery[i]);
-					if(element4.equals("false")){
-						LatLng srodekk=circle1.getCenter();
-						if(element3 == srodekk)
-						circle1.remove();
+					if (element4.equals("false")) {
+						LatLng srodekk = circle1.getCenter();
+						if (element3 == srodekk)
+							circle1.remove();
 						Intent a = new Intent("pl.zeromskiego.androidapp.ALARM");
 						startActivity(a);
 					}
 				}
-					
-				}
 
 			}
+			String element5 = (String) powiadom.pow.get(Idmarkery[i]);
+			if ("true".equals(element5)) {
+				String telefonyhelp = (String) powiadom.tel.get(Idmarkery[i]);
+				String[] telefony = telefonyhelp.split(";");
+				int element2 = (Integer) powiadom.odl.get(Idmarkery[i]);
+				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
+				float[] distance = new float[2];
+				Location.distanceBetween(element3.latitude, element3.longitude,
+						l.getLatitude(), l.getLongitude(), distance);
+				if (distance[0] < element2) {
+					powiadom.pow.put(Idmarkery[i], "false");
+					String element4 = (String) powiadom.pow.get(Idmarkery[i]);
+					if (element4.equals("false")) {
+						LatLng srodekk = circle1.getCenter();
+						if (element3 == srodekk)
+							circle1.remove();
+						for (int a = 0; a < telefony.length; a++) {
+							
+							sendSMS(telefony[a], "Zaraz dotre do " + element3 + " jestem " + element2 + " od celu");
+						}
 
+					}
+				}
+			}
 		}
 
-	
+	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -620,4 +651,10 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		// TODO Auto-generated method stub
 
 	}
+
+	private void sendSMS(String phoneNumber, String message) {
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, null, null);
+	}
+
 }

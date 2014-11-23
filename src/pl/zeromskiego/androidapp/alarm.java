@@ -15,7 +15,6 @@ public class alarm extends Activity implements OnClickListener {
 
 	Button OK;
 	MediaPlayer alarm;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -23,10 +22,40 @@ public class alarm extends Activity implements OnClickListener {
 		setContentView(R.layout.alarm);
 		OK = (Button) findViewById(R.id.ok);
 		OK.setOnClickListener(this);
-		alarm = MediaPlayer.create(alarm.this, R.raw.a1);
-		alarm.start();
+		sprawdzA();
+		
 
 	
+	}
+
+	private void sprawdzA() {
+		
+		if(powiadom.muzyka.equals("a1"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a1);
+			alarm.start();
+		}else if(powiadom.muzyka.equals("a2"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a2);
+			alarm.start();
+		}else if(powiadom.muzyka.equals("a3"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a3);
+			alarm.start();
+		}else if(powiadom.muzyka.equals("a4"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a4);
+			alarm.start();
+		}else if(powiadom.muzyka.equals("a5"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a5);
+			alarm.start();
+		}else if(powiadom.muzyka.equals("a6"))
+		{
+			alarm = MediaPlayer.create(alarm.this, R.raw.a6);
+			alarm.start();
+		}
+		
 	}
 
 	@Override

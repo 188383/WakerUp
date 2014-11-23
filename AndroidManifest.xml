@@ -9,7 +9,7 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="pl.zeromskiego.androidapp.permission.MAPS_RECEIVE" />
-
+	<uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
@@ -22,7 +22,7 @@
     <!-- Required to show current location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+		
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
         android:glEsVersion="0x00020000"

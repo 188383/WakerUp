@@ -15,30 +15,55 @@
         android:layout_height="wrap_content" 
         android:layout_below="@+id/odleglosc" />
 
+    <Button
+        android:id="@+id/dodaj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/kontakty"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/kontakty"
+        android:layout_toRightOf="@+id/kontakty"
+        android:text="Dodaj" />
+
+    <Spinner
+        android:id="@+id/kontakty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/Powiadomic"
+        android:layout_below="@+id/dzwonek" />
+
+    <CheckBox
+        android:id="@+id/Powiadomic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kontakty"
+        android:layout_toRightOf="@+id/alarm"
+        android:text="Powiadomic?" />
+
     <CheckBox
         android:id="@+id/alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dzwonek"
+		android:layout_below="@+id/kontakty"
         android:text="Alarm?" />
 
     <Button
         android:id="@+id/anuluj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/zapisz"
-        android:layout_alignBottom="@+id/zapisz"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="46dp"
         android:text="Anuluj" />
 
     <Button
         android:id="@+id/zapisz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm"
-        android:layout_marginRight="46dp"
-        android:layout_toLeftOf="@+id/anuluj"
+        android:layout_above="@+id/anuluj"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:text="Zapisz" />
 
 </RelativeLayout>

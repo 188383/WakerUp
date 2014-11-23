@@ -58,6 +58,7 @@ public class MainActivity extends Activity{
 	    // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
 	        super.onDestroy();
 
+
 	}
 
 	
