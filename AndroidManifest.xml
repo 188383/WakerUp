@@ -38,7 +38,8 @@
         >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,7 +47,8 @@
         </activity>
         <activity
             android:name=".mapa"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="pl.zeromskiego.androidapp.STARTINGPOINT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -54,7 +56,8 @@
         </activity>
          <activity
             android:name=".wyslij"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="pl.zeromskiego.androidapp.WYSLIJ" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -62,7 +65,8 @@
         </activity>
          <activity
             android:name=".dodaj"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="pl.zeromskiego.androidapp.DODAJ" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -70,7 +74,8 @@
         </activity>
         <activity
             android:name=".wyswietl"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="pl.zeromskiego.androidapp.WYSWIETL" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -79,16 +84,36 @@
          <activity
             android:name=".onas"
             android:label="@string/app_name" 
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Dialog" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="pl.zeromskiego.androidapp.ONAS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+         <activity
+            android:name=".powiadom"
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.Dialog" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="pl.zeromskiego.androidapp.POWIADOM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+		<activity
+            android:name=".alarm"
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.Dialog" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="pl.zeromskiego.androidapp.ALARM" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAxiISE3WFo_8YeZAA9IeOQ8WY9xygTXWU" />
+            android:value="AIzaSyBBRhVoxGu1JTt_z_euBwtDxjJNA9NkMJU" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

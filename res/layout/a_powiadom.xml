@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/odleglosc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/dzwonek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/odleglosc" />
+
+    <CheckBox
+        android:id="@+id/alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dzwonek"
+        android:text="Alarm?" />
+
+    <Button
+        android:id="@+id/anuluj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/zapisz"
+        android:layout_alignBottom="@+id/zapisz"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="46dp"
+        android:text="Anuluj" />
+
+    <Button
+        android:id="@+id/zapisz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm"
+        android:layout_marginRight="46dp"
+        android:layout_toLeftOf="@+id/anuluj"
+        android:text="Zapisz" />
+
+</RelativeLayout>

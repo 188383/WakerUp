@@ -404,9 +404,11 @@ containing a value of this type.
         public static final int powered_by_google_light=0x7f020020;
     }
     public static final class id {
-        public static final int Opcje=0x7f08002c;
-        public static final int RelativeLayout1=0x7f080025;
-        public static final int Table=0x7f080029;
+        public static final int Opcje=0x7f080033;
+        public static final int RelativeLayout1=0x7f08002a;
+        public static final int Table=0x7f08002e;
+        public static final int alarm=0x7f080027;
+        public static final int anuluj=0x7f080028;
         public static final int bDodaj=0x7f080022;
         public static final int bEdit=0x7f080020;
         public static final int bGetinfo=0x7f08001f;
@@ -417,27 +419,30 @@ containing a value of this type.
         public static final int buy_with_google=0x7f08000e;
         public static final int cbAlarm=0x7f08001d;
         public static final int classic=0x7f080011;
-        public static final int dlug=0x7f080027;
-        public static final int dodaj=0x7f08002e;
+        public static final int dlug=0x7f08002c;
+        public static final int dodaj=0x7f080035;
+        public static final int dzwonek=0x7f080026;
         public static final int etAdres=0x7f08001b;
         public static final int etData=0x7f08001e;
         public static final int etMiejsce=0x7f08001c;
         public static final int etNazwa=0x7f080018;
         public static final int etOpis=0x7f08001a;
-        public static final int exit=0x7f080032;
+        public static final int exit=0x7f080039;
         public static final int grayscale=0x7f080012;
         public static final int holo_dark=0x7f080005;
         public static final int holo_light=0x7f080006;
         public static final int hybrid=0x7f080004;
         public static final int idRow=0x7f080023;
-        public static final int info=0x7f08002a;
-        public static final int map=0x7f08002b;
+        public static final int info=0x7f08002f;
+        public static final int map=0x7f080032;
         public static final int match_parent=0x7f08000c;
         public static final int monochrome=0x7f080013;
         public static final int none=0x7f080000;
         public static final int normal=0x7f080001;
-        public static final int odswiez=0x7f080030;
-        public static final int onas=0x7f080031;
+        public static final int odleglosc=0x7f080025;
+        public static final int odswiez=0x7f080037;
+        public static final int ok=0x7f080031;
+        public static final int onas=0x7f080038;
         public static final int production=0x7f080007;
         public static final int rBiznesowe=0x7f080017;
         public static final int rG=0x7f080014;
@@ -446,15 +451,17 @@ containing a value of this type.
         public static final int sandbox=0x7f080008;
         public static final int satellite=0x7f080002;
         public static final int selectionDetails=0x7f08000b;
-        public static final int send=0x7f080026;
+        public static final int send=0x7f08002b;
         public static final int strict_sandbox=0x7f080009;
-        public static final int szer=0x7f080028;
+        public static final int szer=0x7f08002d;
         public static final int tVonas=0x7f080024;
         public static final int terrain=0x7f080003;
         public static final int tvNazwa=0x7f080019;
+        public static final int tvalarm=0x7f080030;
         public static final int wrap_content=0x7f08000d;
-        public static final int wyslij=0x7f08002d;
-        public static final int wyswietl=0x7f08002f;
+        public static final int wyslij=0x7f080034;
+        public static final int wyswietl=0x7f080036;
+        public static final int zapisz=0x7f080029;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f090000;
@@ -462,17 +469,25 @@ containing a value of this type.
     public static final class layout {
         public static final int a_dodaj=0x7f030000;
         public static final int a_onas=0x7f030001;
-        public static final int a_wyslij=0x7f030002;
-        public static final int a_wyswietl=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int mapa=0x7f030005;
-        public static final int wyslij=0x7f030006;
+        public static final int a_powiadom=0x7f030002;
+        public static final int a_wyslij=0x7f030003;
+        public static final int a_wyswietl=0x7f030004;
+        public static final int activity_main=0x7f030005;
+        public static final int alarm=0x7f030006;
+        public static final int mapa=0x7f030007;
+        public static final int wyslij=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
     }
     public static final class raw {
-        public static final int song=0x7f040000;
+        public static final int a1=0x7f040000;
+        public static final int a2=0x7f040001;
+        public static final int a3=0x7f040002;
+        public static final int a4=0x7f040003;
+        public static final int a5=0x7f040004;
+        public static final int a6=0x7f040005;
+        public static final int song=0x7f040006;
     }
     public static final class string {
         public static final int accept=0x7f060002;

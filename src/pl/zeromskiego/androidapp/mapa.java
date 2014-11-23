@@ -33,6 +33,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,12 +47,15 @@ import android.view.ViewConfiguration;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,7 +63,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class mapa extends Activity implements OnMapLongClickListener,
-		OnMarkerClickListener, OnClickListener {
+		OnMarkerClickListener, OnClickListener,
+		android.location.LocationListener {
 
 	private static final String TAG = null;
 	public GoogleMap googleMap;
@@ -77,11 +82,16 @@ public class mapa extends Activity implements OnMapLongClickListener,
 	JSONArray array;
 	ProgressDialog pDialog;
 	Polyline line;
+	public static String ida;
+	public String markery;
+	Circle circle1;
+    LocationManager lm;
+    Location location;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		 getApplicationInfo().targetSdkVersion = 10;
-		
+		getApplicationInfo().targetSdkVersion = 10;
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mapa);
 		bz = new BazaSpotkan(this);
@@ -94,12 +104,41 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		}
 
 	}
+	private void initilizeMap() {
+		if (googleMap == null) {
+			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+					R.id.map)).getMap();
+
+			// check if map is created successfully or not
+			if (googleMap == null) {
+				Toast.makeText(getApplicationContext(),
+						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
+						.show();
+			}
+		}
+		googleMap.setMyLocationEnabled(true);
+		googleMap.getMyLocation();
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Wroclaw, 13));
+		googleMap.getUiSettings().setZoomControlsEnabled(true);
+		googleMap.getUiSettings().setZoomGesturesEnabled(true);
+		googleMap.getUiSettings().setCompassEnabled(true);
+		googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+		googleMap.getUiSettings().setRotateGesturesEnabled(true);
+		googleMap.setOnMapLongClickListener(this);
+		googleMap.setOnMarkerClickListener(this);
+		lm = (LocationManager)this.getSystemService(LOCATION_SERVICE); 
+		location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER); //<5>
+	    if (location != null) {
+	      Log.d(TAG, location.toString());
+	      this.onLocationChanged(location); //<6>
+	    }
+	  
+	}
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.wyslij) {
@@ -119,6 +158,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 			googleMap.clear();
 			new Load().execute();
 			CreateMap();
+			DrawCircle();
 			return true;
 
 		}
@@ -128,18 +168,45 @@ public class mapa extends Activity implements OnMapLongClickListener,
 			return true;
 		}
 		if (item.getItemId() == R.id.exit) {
+			onDestroy();
 			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void DrawCircle() {
+		String[] Idmarkery = markery.split(";");
+	
+		for (int i = 0; i < Idmarkery.length; i++) {
+			String element1 = (String) powiadom.al.get(Idmarkery[i]);
+			if ("true".equals(element1)) {	
+				int element2 = (Integer) powiadom.odl.get(Idmarkery[i]);
+				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
+				double elat = element3.latitude;
+				double elng = element3.longitude;
+				CircleOptions circleOptions1 = new CircleOptions().center(
+				new LatLng(elat, elng)).radius(element2).zIndex(i);
+				circle1 = googleMap.addCircle(circleOptions1);
+				Log.v(TAG,"nazwa kolo" + circle1.getZIndex());
+			}else if ("false".equals(element1)) {
+				LatLng srodekk=circle1.getCenter();
+				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
+				if(element3 == srodekk)
+				circle1.remove();
+			}
+				
+			
+		}
+	}
+
 	private void CreateMap() {
 		// TODO Auto-generated method stub
 		double lat = 0.0;
 		double lng = 0.0;
-		googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-				R.id.map)).getMap();
+		markery = "";
+
+
 		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
 		try {
 			bz.open();
@@ -166,12 +233,12 @@ public class mapa extends Activity implements OnMapLongClickListener,
 					}
 
 				}
-				googleMap.addMarker(new MarkerOptions()
+				Marker m = googleMap.addMarker(new MarkerOptions()
 						.title("[" + wynik1[0] + "]" + "<" + wynik1[6] + ">"
 								+ " " + wynik1[1])
 						.snippet(wynik1[2] + " " + wynik1[5])
 						.position(new LatLng(lat, lng)));
-
+				markery += m.getTitle() + ";";
 				Addres = null;
 				lat = 0.0;
 				lng = 0.0;
@@ -192,37 +259,29 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		bz.close();
 	}
 
-	private void initilizeMap() {
-		if (googleMap == null) {
-			googleMap = ((MapFragment) getFragmentManager().findFragmentById(
-					R.id.map)).getMap();
 
-			// check if map is created successfully or not
-			if (googleMap == null) {
-				Toast.makeText(getApplicationContext(),
-						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
-						.show();
-			}
-		}
-		googleMap.setMyLocationEnabled(true);
-		googleMap.getMyLocation();
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Wroclaw, 13));
-		googleMap.getUiSettings().setZoomControlsEnabled(true);
-		googleMap.getUiSettings().setZoomGesturesEnabled(true);
-		googleMap.getUiSettings().setCompassEnabled(true);
-		googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-		googleMap.getUiSettings().setRotateGesturesEnabled(true);
-		googleMap.setOnMapLongClickListener(this);
-		googleMap.setOnMarkerClickListener(this);
-		
-	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		initilizeMap();
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 0, this);
+		googleMap.clear();
+		CreateMap();
+		DrawCircle();
+	}
+	@Override
+	public void onDestroy()
+	{
+	    // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
+	        super.onDestroy();
+
 	}
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
 	@Override
 	public void onMapLongClick(LatLng arg0) {
 		OnLongClicklat = arg0.latitude;
@@ -267,13 +326,13 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 		arg0.hideInfoWindow();
 		MarkerPosition = arg0.getPosition();
-		String id = arg0.getId();
+		ida = arg0.getTitle();
 		String title = arg0.getTitle();
 		final Location start = googleMap.getMyLocation();
-		Log.i(TAG, id + " " + title);
+		Log.i(TAG, ida + " " + title);
 		AlertDialog MOpcje = new AlertDialog.Builder(mapa.this).create();
-		MOpcje.setTitle(arg0.getId() + " " + title);
-		MOpcje.setMessage("<tu bedzie opis punktu>");
+		MOpcje.setTitle(title);
+		MOpcje.setMessage(arg0.getSnippet());
 		MOpcje.setButton("Prowadz do", new DialogInterface.OnClickListener() {
 
 			@Override
@@ -285,7 +344,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 				new connectAsyncTask(urlTopass).execute();
 
 			}
-		}); 
+		});
 		MOpcje.setButton2("Edytuj", new DialogInterface.OnClickListener() {
 
 			@Override
@@ -299,6 +358,8 @@ public class mapa extends Activity implements OnMapLongClickListener,
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
+				Intent i = new Intent("pl.zeromskiego.androidapp.POWIADOM");
+				startActivity(i);
 
 			}
 
@@ -306,7 +367,7 @@ public class mapa extends Activity implements OnMapLongClickListener,
 		MOpcje.show();
 		return true;
 	}
-	
+
 	private class connectAsyncTask extends AsyncTask<Void, Void, String> {
 		private ProgressDialog progressDialog;
 		String url;
@@ -468,7 +529,6 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 		return poly;
 	}
-	
 
 	public class Load extends AsyncTask<String, Integer, String> {
 
@@ -510,4 +570,54 @@ public class mapa extends Activity implements OnMapLongClickListener,
 
 	}
 
+	@Override
+	public void onLocationChanged(Location l) {
+		// TODO Auto-generated method stub    
+		String[] Idmarkery = markery.split(";");
+
+		for (int i = 0; i < Idmarkery.length; i++) {
+			String element1 = (String) powiadom.al.get(Idmarkery[i]);
+			if ("true".equals(element1)) {
+				int element2 = (Integer) powiadom.odl.get(Idmarkery[i]);
+				LatLng element3 = (LatLng) powiadom.poz.get(Idmarkery[i]);
+				float[] distance = new float[2];
+				Location.distanceBetween(element3.latitude, element3.longitude,
+						l.getLatitude(), l.getLongitude(), distance);
+				if (distance[0] < element2) {
+					powiadom.al.put(Idmarkery[i], "false");
+					String element4 = (String) powiadom.al.get(Idmarkery[i]);
+					if(element4.equals("false")){
+						LatLng srodekk=circle1.getCenter();
+						if(element3 == srodekk)
+						circle1.remove();
+						Intent a = new Intent("pl.zeromskiego.androidapp.ALARM");
+						startActivity(a);
+					}
+				}
+					
+				}
+
+			}
+
+		}
+
+	
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
 }

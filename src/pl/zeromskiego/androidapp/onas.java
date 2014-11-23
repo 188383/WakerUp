@@ -12,6 +12,24 @@ public class onas extends Activity {
 		setContentView(R.layout.a_onas);
 	}
 	
-	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onDestroy()
+	{
+	    // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
+	        super.onDestroy();
+
+	}
 
 }

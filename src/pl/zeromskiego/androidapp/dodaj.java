@@ -27,6 +27,7 @@ public class dodaj extends Activity implements OnClickListener {
 	CheckBox cbAlarm;
 	Button bDodaj, bUsun, bInfo, bEdit;
 	RadioButton rBiznesowe, rTowarzyskie, rPodroz;
+	String Nazwa, Opis, Alarm, Typ, Miejsce, Adres, Data, sRow1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +95,21 @@ public class dodaj extends Activity implements OnClickListener {
 		case R.id.bDodaj:
 			boolean didItWork = true;
 			try {
-				String Alarm = "";
-				String Typ = "";
-				String Nazwa = etNazwa.getText().toString();
-				String Opis = etOpis.getText().toString();
-				String Miejsce = etMiejsce.getText().toString();
-				String Adres = etAdres.getText().toString();
-				String Data = etData.getText().toString();
+				Alarm = "";
+				Typ = "";
+				Nazwa = etNazwa.getText().toString();
+				if(Nazwa.equals("")){
+					didItWork = false;
+					Dialog d = new Dialog(this);
+					d.setTitle("Nie poda³es nazwy");
+					TextView tv = new TextView(this);
+					d.setContentView(tv);
+					d.show();
+				}
+				Opis = etOpis.getText().toString();
+				Miejsce = etMiejsce.getText().toString();
+				Adres = etAdres.getText().toString();
+				Data = etData.getText().toString();
 				if (cbAlarm.isChecked()) {
 					Alarm = "ture";
 				} else {
@@ -116,11 +125,7 @@ public class dodaj extends Activity implements OnClickListener {
 					Typ = "Nie okreslony";
 				}
 
-				BazaSpotkan entry = new BazaSpotkan(dodaj.this);
-				entry.open();
-				entry.createEntry(Nazwa, Opis, Miejsce, Adres, Data,
-						Typ, Alarm);
-				entry.close();
+				
 
 			} catch (Exception e) {
 				didItWork = false;
@@ -133,6 +138,17 @@ public class dodaj extends Activity implements OnClickListener {
 				d.show();
 			} finally {
 				if (didItWork) {
+
+					BazaSpotkan entry = new BazaSpotkan(dodaj.this);
+					try {
+						entry.open();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					entry.createEntry(Nazwa, Opis, Miejsce, Adres, Data,
+							Typ, Alarm);
+					entry.close();
 					Dialog d = new Dialog(this);
 					d.setTitle("ooo yea!:>");
 					TextView tv = new TextView(this);
@@ -151,11 +167,8 @@ public class dodaj extends Activity implements OnClickListener {
 			break;
 		case R.id.bUsun:
 			try {
-				String sRow1 = String.valueOf(idRow.getSelectedItem());
-				BazaSpotkan bz2 = new BazaSpotkan(this);
-				bz2.open();
-				bz2.deleteSpotkanie(sRow1);
-				bz2.close();
+				sRow1 = String.valueOf(idRow.getSelectedItem());
+				
 			} catch (Exception e) {
 				String error = e.toString();
 				Dialog d = new Dialog(this);
@@ -165,6 +178,15 @@ public class dodaj extends Activity implements OnClickListener {
 				d.setContentView(tv);
 				d.show();
 			} finally {
+				BazaSpotkan bz2 = new BazaSpotkan(this);
+				try {
+					bz2.open();
+					bz2.deleteSpotkanie(sRow1);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			
+				bz2.close();
 				Dialog d = new Dialog(this);
 				d.setTitle("ooo yea!:>");
 				TextView tv = new TextView(this);
@@ -208,14 +230,14 @@ public class dodaj extends Activity implements OnClickListener {
 			break;
 		case R.id.bEdit:
 			try {
-				String Nazwa = etNazwa.getText().toString();
-				String Opis = etOpis.getText().toString();
-				String Miejsce = etMiejsce.getText().toString();
-				String Adres = etAdres.getText().toString();
-				String Data = etData.getText().toString();
+				Nazwa = etNazwa.getText().toString();
+				Opis = etOpis.getText().toString();
+				Miejsce = etMiejsce.getText().toString();
+				Adres = etAdres.getText().toString();
+				Data = etData.getText().toString();
 				String sRow = String.valueOf(idRow.getSelectedItem());
-				String Alarm = "";
-				String Typ = "";
+				Alarm = "";
+				Typ = "";
 				if (cbAlarm.isChecked()) {
 					Alarm = "ture";
 				} else {
@@ -256,6 +278,25 @@ public class dodaj extends Activity implements OnClickListener {
 			break;
 		}
 		
+
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onDestroy()
+	{
+	    // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLAS
+	        super.onDestroy();
 
 	}
 }
