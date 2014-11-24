@@ -28,7 +28,7 @@ public class dodaj extends Activity implements OnClickListener {
 	Button bDodaj, bUsun, bInfo, bEdit;
 	RadioButton rBiznesowe, rTowarzyskie, rPodroz;
 	String Nazwa, Opis, Alarm, Typ, Miejsce, Adres, Data, sRow1;
-
+	boolean didItWork;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -42,8 +42,216 @@ public class dodaj extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 	}
-	public void addItemsOnSpinner() throws SQLException {
+
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.bDodaj:
+			dodaj();
+			break;
+		case R.id.bUsun:
+			Usun();
+			break;
+		case R.id.bGetinfo:
+			try {
+				String s = String.valueOf(idRow.getSelectedItem());
+				long l = Long.parseLong(s);
+				mapa.bz.open();
+				String retnazwa = mapa.bz.getNazwa(l);
+				String retopis = mapa.bz.getOpis(l);
+				String retMiejsce = mapa.bz.getMiejsce(l);
+				String retAdres = mapa.bz.getAdres(l);
+				String retData = mapa.bz.getD(l);
+				mapa.bz.close();
+				etNazwa.setText(retnazwa);
+				etOpis.setText(retopis);
+				etMiejsce.setText(retMiejsce);
+				etAdres.setText(retAdres);
+				etData.setText(retData);
+			} catch (Exception e) {
+				String error = e.toString();
+				Dialog d = new Dialog(this);
+				d.setTitle("Error");
+				TextView tv = new TextView(this);
+				tv.setText(error);
+				d.setContentView(tv);
+				d.show();
+			}
+			break;
+		case R.id.bEdit:
+			Edit();
+			break;
+		}
+	}
 	
+	private void Edit() {
+		// TODO Auto-generated method stub
+		try {
+			Nazwa = etNazwa.getText().toString();
+			Opis = etOpis.getText().toString();
+			Miejsce = etMiejsce.getText().toString();
+			Adres = etAdres.getText().toString();
+			Data = etData.getText().toString();
+			String sRow = String.valueOf(idRow.getSelectedItem());
+			Alarm = "";
+			Typ = "";
+			if (cbAlarm.isChecked()) {
+				Alarm = "ture";
+			} else {
+				Alarm = "false";
+			}
+			if (rBiznesowe.isChecked()) {
+				Typ = "Biznesowe";
+			} else if (rTowarzyskie.isChecked()) {
+				Typ = "Towarzyskie";
+			} else if (rPodroz.isChecked()) {
+				Typ = "Podroz";
+			}else{
+				Typ = "Nie okreslony";
+			}
+
+			long lRow = Long.parseLong(sRow);
+		
+			mapa.bz.open();
+			mapa.bz.updateSpotkanie(lRow, Nazwa, Opis, Miejsce, Adres,
+					Data, Typ, Alarm);
+			mapa.bz.close();
+		} catch (Exception e) {
+			String error = e.toString();
+			Dialog d = new Dialog(this);
+			d.setTitle("Error");
+			TextView tv = new TextView(this);
+			tv.setText(error);
+			d.setContentView(tv);
+			d.show();
+		} finally {
+			Dialog d = new Dialog(this);
+			d.setTitle("ooo yea!:>");
+			TextView tv = new TextView(this);
+			tv.setText("Success");
+			d.setContentView(tv);
+			d.show();
+		}
+	}
+	
+
+
+	private void Usun() {
+		// TODO Auto-generated method stub
+		try {
+			sRow1 = String.valueOf(idRow.getSelectedItem());	
+		} catch (Exception e) {
+			String error = e.toString();
+			Dialog d = new Dialog(this);
+			d.setTitle("Error");
+			TextView tv = new TextView(this);
+			tv.setText(error);
+			d.setContentView(tv);
+			d.show();
+		} finally {
+			try {
+				mapa.bz.open();
+				mapa.bz.deleteSpotkanie(sRow1);
+				mapa.bz.close();
+				Dialog d = new Dialog(this);
+				d.setTitle("ooo yea!:>");
+				TextView tv = new TextView(this);
+				tv.setText("Success");
+				d.setContentView(tv);
+				d.show();
+				try {
+					addItemsOnSpinner();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		
+			
+		}
+	}
+
+
+	private void dodaj() {
+		// TODO Auto-generated method stub
+		didItWork = true;
+		try {
+			Alarm = "";
+			Typ = "";
+			Nazwa = etNazwa.getText().toString();
+			if(Nazwa.equals("")){
+				didItWork = false;
+				Dialog d = new Dialog(this);
+				d.setTitle("Nie poda³es nazwy");
+				TextView tv = new TextView(this);
+				d.setContentView(tv);
+				d.show();
+			}else{
+			sprawdzNazwe();
+			}
+			Opis = etOpis.getText().toString();
+			Miejsce = etMiejsce.getText().toString();
+			Adres = etAdres.getText().toString();
+			Data = etData.getText().toString();
+			if (cbAlarm.isChecked()) {
+				Alarm = "ture";
+			} else {
+				Alarm = "false";
+			}
+			if (rBiznesowe.isChecked()) {
+				Typ = "Biznesowe";
+			} else if (rTowarzyskie.isChecked()) {
+				Typ = "Towarzyskie";
+			} else if (rPodroz.isChecked()) {
+				Typ = "Podroz";
+			}else{
+				Typ = "Nie okreslony";
+			}
+	
+		} catch (Exception e) {
+			didItWork = false;
+			String error = e.toString();
+			Dialog d = new Dialog(this);
+			d.setTitle("Error");
+			TextView tv = new TextView(this);
+			tv.setText(error);
+			d.setContentView(tv);
+			d.show();
+		} finally {
+			if (didItWork) {
+				
+				try {
+					mapa.bz.open();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				mapa.bz.createEntry(Nazwa, Opis, Miejsce, Adres, Data,
+						Typ, Alarm);
+				mapa.bz.close();
+				Dialog d = new Dialog(this);
+				d.setTitle("ooo yea!:>");
+				TextView tv = new TextView(this);
+				tv.setText("Success");
+				d.setContentView(tv);
+				d.show();
+				try {
+					addItemsOnSpinner();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+
+	public void addItemsOnSpinner() throws SQLException {
+		
 		BazaSpotkan bz = new BazaSpotkan(this);
 		List<String> list = new ArrayList<String>();
 		bz.open();
@@ -87,198 +295,34 @@ public class dodaj extends Activity implements OnClickListener {
 	
 
 	}
-
-	@Override
-	public void onClick(View v) {
+	private void sprawdzNazwe() throws SQLException {
 		// TODO Auto-generated method stub
-		switch (v.getId()) {
-		case R.id.bDodaj:
-			boolean didItWork = true;
-			try {
-				Alarm = "";
-				Typ = "";
-				Nazwa = etNazwa.getText().toString();
-				if(Nazwa.equals("")){
+		BazaSpotkan bz = new BazaSpotkan(this);
+		bz.open();
+		String[] idRow = null;
+		String id = bz.pobierzIDROW();
+		idRow = id.split(" ");
+		for (int i = 0; i < idRow.length; i++) {
+			int IdHelper = Integer.parseInt(idRow[i]);
+			String wynik1[] = null;
+			String Info = bz.getNazwa(IdHelper) + ";";
+			wynik1 = Info.split(";");
+			for (int a = 0; a < wynik1.length; a++) {
+				String nazwa1 = wynik1[a];
+				if(Nazwa.equals(nazwa1)){
 					didItWork = false;
 					Dialog d = new Dialog(this);
-					d.setTitle("Nie poda³es nazwy");
+					d.setTitle("Taka nazwa ju¿ istnieje");
 					TextView tv = new TextView(this);
 					d.setContentView(tv);
 					d.show();
 				}
-				Opis = etOpis.getText().toString();
-				Miejsce = etMiejsce.getText().toString();
-				Adres = etAdres.getText().toString();
-				Data = etData.getText().toString();
-				if (cbAlarm.isChecked()) {
-					Alarm = "ture";
-				} else {
-					Alarm = "false";
-				}
-				if (rBiznesowe.isChecked()) {
-					Typ = "Biznesowe";
-				} else if (rTowarzyskie.isChecked()) {
-					Typ = "Towarzyskie";
-				} else if (rPodroz.isChecked()) {
-					Typ = "Podroz";
-				}else{
-					Typ = "Nie okreslony";
-				}
-
-				
-
-			} catch (Exception e) {
-				didItWork = false;
-				String error = e.toString();
-				Dialog d = new Dialog(this);
-				d.setTitle("Error");
-				TextView tv = new TextView(this);
-				tv.setText(error);
-				d.setContentView(tv);
-				d.show();
-			} finally {
-				if (didItWork) {
-
-					BazaSpotkan entry = new BazaSpotkan(dodaj.this);
-					try {
-						entry.open();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					entry.createEntry(Nazwa, Opis, Miejsce, Adres, Data,
-							Typ, Alarm);
-					entry.close();
-					Dialog d = new Dialog(this);
-					d.setTitle("ooo yea!:>");
-					TextView tv = new TextView(this);
-					tv.setText("Success");
-					d.setContentView(tv);
-					d.show();
-					try {
-						addItemsOnSpinner();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 			}
-
-			break;
-		case R.id.bUsun:
-			try {
-				sRow1 = String.valueOf(idRow.getSelectedItem());
-				
-			} catch (Exception e) {
-				String error = e.toString();
-				Dialog d = new Dialog(this);
-				d.setTitle("Error");
-				TextView tv = new TextView(this);
-				tv.setText(error);
-				d.setContentView(tv);
-				d.show();
-			} finally {
-				BazaSpotkan bz2 = new BazaSpotkan(this);
-				try {
-					bz2.open();
-					bz2.deleteSpotkanie(sRow1);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			
-				bz2.close();
-				Dialog d = new Dialog(this);
-				d.setTitle("ooo yea!:>");
-				TextView tv = new TextView(this);
-				tv.setText("Success");
-				d.setContentView(tv);
-				d.show();
-				try {
-					addItemsOnSpinner();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			for (int a = 0; a < wynik1.length; a++) {
+				wynik1[a] = null;
 			}
-			break;
-		case R.id.bGetinfo:
-			try {
-				String s = String.valueOf(idRow.getSelectedItem());
-				long l = Long.parseLong(s);
-				BazaSpotkan bz = new BazaSpotkan(this);
-				bz.open();
-				String retnazwa = bz.getNazwa(l);
-				String retopis = bz.getOpis(l);
-				String retMiejsce = bz.getMiejsce(l);
-				String retAdres = bz.getAdres(l);
-				String retData = bz.getD(l);
-				bz.close();
-				etNazwa.setText(retnazwa);
-				etOpis.setText(retopis);
-				etMiejsce.setText(retMiejsce);
-				etAdres.setText(retAdres);
-				etData.setText(retData);
-			} catch (Exception e) {
-				String error = e.toString();
-				Dialog d = new Dialog(this);
-				d.setTitle("Error");
-				TextView tv = new TextView(this);
-				tv.setText(error);
-				d.setContentView(tv);
-				d.show();
-			}
-			break;
-		case R.id.bEdit:
-			try {
-				Nazwa = etNazwa.getText().toString();
-				Opis = etOpis.getText().toString();
-				Miejsce = etMiejsce.getText().toString();
-				Adres = etAdres.getText().toString();
-				Data = etData.getText().toString();
-				String sRow = String.valueOf(idRow.getSelectedItem());
-				Alarm = "";
-				Typ = "";
-				if (cbAlarm.isChecked()) {
-					Alarm = "ture";
-				} else {
-					Alarm = "false";
-				}
-				if (rBiznesowe.isChecked()) {
-					Typ = "Biznesowe";
-				} else if (rTowarzyskie.isChecked()) {
-					Typ = "Towarzyskie";
-				} else if (rPodroz.isChecked()) {
-					Typ = "Podroz";
-				}else{
-					Typ = "Nie okreslony";
-				}
-
-				long lRow = Long.parseLong(sRow);
-				BazaSpotkan bz1 = new BazaSpotkan(this);
-				bz1.open();
-				bz1.updateSpotkanie(lRow, Nazwa, Opis, Miejsce, Adres,
-						Data, Typ, Alarm);
-				bz1.close();
-			} catch (Exception e) {
-				String error = e.toString();
-				Dialog d = new Dialog(this);
-				d.setTitle("Error");
-				TextView tv = new TextView(this);
-				tv.setText(error);
-				d.setContentView(tv);
-				d.show();
-			} finally {
-				Dialog d = new Dialog(this);
-				d.setTitle("ooo yea!:>");
-				TextView tv = new TextView(this);
-				tv.setText("Success");
-				d.setContentView(tv);
-				d.show();
-			}
-			break;
 		}
-		
-
+		bz.close();
 	}
 	@Override
 	protected void onPause() {

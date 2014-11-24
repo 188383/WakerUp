@@ -15,9 +15,9 @@ public class wyswietl extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.a_wyswietl);
 		TextView tv = (TextView)findViewById(R.id.info);
-		BazaSpotkan bz = new BazaSpotkan(this);
+		
 		try {
-			bz.open();
+			mapa.bz.open();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			TextView tv1 = new TextView(this);
@@ -29,8 +29,8 @@ public class wyswietl extends Activity{
 			d.setContentView(tv);
 			d.show();
 		}
-		String data = bz.getData();
-		bz.close();
+		String data = mapa.bz.getData();
+		mapa.bz.close();
 		tv.setText(data);
 	}
 	

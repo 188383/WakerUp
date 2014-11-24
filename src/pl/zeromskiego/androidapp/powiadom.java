@@ -27,7 +27,7 @@ public class powiadom extends Activity implements OnClickListener {
 	public static HashMap al = new HashMap();
 	public static HashMap odl = new HashMap();
 	public static HashMap poz = new HashMap();
-	public static HashMap pow = new HashMap();	
+	public static HashMap pow = new HashMap();
 	public static HashMap tel = new HashMap();
 	String num;
 	List<String> list1 = new ArrayList<String>();;
@@ -80,7 +80,7 @@ public class powiadom extends Activity implements OnClickListener {
 				String name = cur
 						.getString(cur
 								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-				Log.i("Names", name);
+
 				if (Integer
 						.parseInt(cur.getString(cur
 								.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
@@ -94,8 +94,8 @@ public class powiadom extends Activity implements OnClickListener {
 						String phoneNumber = phones
 								.getString(phones
 										.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-						Log.i("Number", phoneNumber);
-						list1.add(phoneNumber); // mozna dopisac name bedzie
+
+						list1.add(name + " nr: " + phoneNumber); // mozna dopisac name bedzie
 												// sciagac nazwy
 					}
 					phones.close();
@@ -120,11 +120,8 @@ public class powiadom extends Activity implements OnClickListener {
 				al.put(mapa.ida, "true");
 				odl.put(mapa.ida, odle);
 				poz.put(mapa.ida, mapa.MarkerPosition);
-				finish();
-			}else {
-				poz.put(mapa.ida, mapa.MarkerPosition);
+			}else if (!alarm.isChecked()) {
 				al.put(mapa.ida, "false");
-				finish();
 			}
 			if (powiadom.isChecked()) {
 				int odle = (Integer) odleglosc.getSelectedItem();
@@ -133,19 +130,22 @@ public class powiadom extends Activity implements OnClickListener {
 				poz.put(mapa.ida, mapa.MarkerPosition);
 				tel.put(mapa.ida, listaNum);
 				listaNum = "";
-			}else {
-				poz.put(mapa.ida, mapa.MarkerPosition);
+			}else if(!powiadom.isChecked()) {	
 				pow.put(mapa.ida, "false");
-				finish();
 			}
 			
+			finish();
+
 			break;
 		case R.id.anuluj:
 			finish();
 			break;
 		case R.id.dodaj:
 			num = (String) kontakty.getSelectedItem();
-			listaNum += num + ";";
+			String hnum[] = num.split(" nr: ");
+			listaNum += hnum[1] + ";";
+			hnum[0]=null;
+		    hnum[1]=null;
 			break;
 		}
 

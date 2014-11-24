@@ -139,6 +139,20 @@ public class BazaSpotkan {
 		}
 		return null;
 	}
+	public String getId(String nazwa) throws SQLException {
+		String[] columns = new String[] { KEY_ROWID, KEY_NAZWA, KEY_OPIS,
+				KEY_MIEJSCE, KEY_ADRES, KEY_DATA, KEY_TYP,
+				KEY_ALARM };
+
+		Cursor c = ourDatabase.query(DATABASE_TABLE, columns, KEY_NAZWA + "="
+				+ nazwa, null, null, null, null, null);
+		if (c != null) {
+			c.moveToFirst();
+			String id = c.getString(0);
+			return id;
+		}
+		return null;
+	}
 
 	public String getOpis(long l) throws SQLException {
 		// TODO Auto-generated method stub
@@ -248,6 +262,10 @@ public class BazaSpotkan {
 		
 		ourDatabase.update(DATABASE_TABLE, cvUp, KEY_ROWID + "=" + lRow1, null);
 		ourDatabase.delete(DATABASE_TABLE, KEY_ROWID + "=" + lRow1, null);
+	}
+	public void deleteSpotkanie2(String Nazwa) throws SQLException {
+		// TODO Auto-generated method stub		
+		ourDatabase.delete(DATABASE_TABLE, KEY_NAZWA + "=" + Nazwa, null);
 	}
 	public String pobierzIDROW() throws SQLException{
 		String[] columns = new String[] { KEY_ROWID, KEY_NAZWA, KEY_OPIS,
